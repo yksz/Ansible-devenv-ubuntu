@@ -1,0 +1,24 @@
+- name: Install the necessary dependencies
+  apt: pkg={{ item }} force=yes
+  with_items:
+    - curl
+    - openssh-server
+    - ca-certificates
+    - postfix
+  environment: "{{ proxy_env }}"
+
+- name: Download the GitLab script
+  get_url: url=https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh
+           dest=/tmp/script.sh
+  environment: "{{ proxy_env }}"
+
+- name: Execute the GitLab script
+  command: bash /tmp/script.sh
+  environment: "{{ proxy_env }}"
+
+- name: Install GitLab
+  apt: pkg=gitlab-ce force=yes
+  environment: "{{ proxy_env }}"
+
+- name: Configure and start GitLab
+  command: gitlab-ctl reconfigure

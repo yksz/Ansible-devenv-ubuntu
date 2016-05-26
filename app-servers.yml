@@ -1,4 +1,5 @@
 - hosts: app-servers
   become: yes
   roles:
+    - gitlab
     - jenkins
