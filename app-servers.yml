@@ -1,5 +1,6 @@
 - hosts: app-servers
   become: yes
   roles:
+    - timezone
     - gitlab
     - jenkins
