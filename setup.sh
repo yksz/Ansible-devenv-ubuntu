@@ -1,3 +1,3 @@
 #!/bin/sh
 
-ansible-playbook -i hosts devenv.yml -kK -c paramiko
+ansible-playbook -i hosts site.yml -kK -c paramiko

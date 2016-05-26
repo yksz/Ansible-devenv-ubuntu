@@ -1,0 +1,7 @@
+- name: Install Jenkins
+  apt: pkg=jenkins force=yes
+  environment: "{{ proxy_env }}"
+
+- name: Start Jenkins
+  service: name=jenkins state=started
+  environment: "{{ proxy_env }}"
