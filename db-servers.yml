@@ -1,0 +1,4 @@
+- hosts: db-servers
+  become: yes
+  roles:
+    - postgresql

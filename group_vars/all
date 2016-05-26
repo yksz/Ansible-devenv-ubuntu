@@ -5,8 +5,10 @@ proxy_port: <8080>
 proxy_user: <user>
 proxy_passwd: <passwd>
 
-proxy: "{{ proxy_user }}:{{ proxy_passwd }}@{{ proxy_host }}:{{ proxy_port }}"
+db_user: <user>
+db_passwd: <passwd>
 
+proxy: "{{ proxy_user }}:{{ proxy_passwd }}@{{ proxy_host }}:{{ proxy_port }}"
 proxy_env:
   http_proxy: http://{{ proxy }}
   https_proxy: http://{{ proxy }}

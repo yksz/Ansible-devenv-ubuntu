@@ -1,0 +1,14 @@
+- name: Install PostgreSQL
+  apt: pkg={{ item }} force=yes
+  with_items:
+    - postgresql
+    - python-psycopg2
+  environment: "{{ proxy_env }}"
+
+- name: Create a database user
+  postgresql_user:
+    name: "{{ db_user }}"
+    password: "{{ db_passwd }}"
+    role_attr_flags: SUPERUSER,CREATEROLE,CREATEDB,REPLICATION
+    login_user: postgres
+  become_user: postgres

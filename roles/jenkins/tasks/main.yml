@@ -4,4 +4,3 @@
 
 - name: Start Jenkins
   service: name=jenkins state=started
-  environment: "{{ proxy_env }}"
