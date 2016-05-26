@@ -1,0 +1,8 @@
+# jenkins
+- hosts: devenv
+  become: yes
+  tasks:
+    - name: Install Jenkins
+      apt: pkg=jenkins force=yes
+    - name: Start Jenkins
+      service: name=jenkins state=started
