@@ -1,6 +1,7 @@
-- hosts: app-servers
+- hosts: web-servers
   become: yes
   roles:
     - timezone
+    - nginx
     - gitlab
     - jenkins

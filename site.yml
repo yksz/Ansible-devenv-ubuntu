@@ -1,2 +1,2 @@
 - include: db-servers.yml
-- include: app-servers.yml
+- include: web-servers.yml
