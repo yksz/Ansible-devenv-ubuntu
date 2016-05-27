@@ -1,3 +1,18 @@
+- name: Install jre7
+  apt: pkg=openjdk-7-jre state=latest force=yes
+  environment: "{{ proxy_env }}"
+
+- name: apt-key add
+  shell: wget -q -O - https://jenkins-ci.org/debian/jenkins-ci.org.key | sudo apt-key add -
+  environment: "{{ proxy_env }}"
+
+- name: Add the package URL to sources.list
+  shell: sh -c 'echo deb http://pkg.jenkins-ci.org/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
+
+- name: apt-get update
+  apt: update_cache=yes
+  environment: "{{ proxy_env }}"
+
 - name: Install Jenkins
   apt: pkg=jenkins force=yes
   environment: "{{ proxy_env }}"
