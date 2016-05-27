@@ -7,46 +7,26 @@
     - postfix
   environment: "{{ proxy_env }}"
 
-- name: Download the GitLab script
-  get_url: url=https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh
-           dest=/tmp/script.sh
-  environment: "{{ proxy_env }}"
-
-- name: Execute the GitLab script
-  command: bash /tmp/script.sh
+- name: Downlad and execute the script
+  shell: curl -sS https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh | bash
   environment: "{{ proxy_env }}"
 
 - name: Install GitLab
   apt: pkg=gitlab-ce force=yes
   environment: "{{ proxy_env }}"
 
-- name: Configure the GitLab database settings
-  lineinfile: dest=/etc/gitlab/gitlab.rb
-              backrefs=yes
-              backup=yes
-              regexp={{ item.regexp }}
-              line={{ item.line }}
-  with_items:
-    - regexp: ^# postgresql\['enable'\]
-      line:   "postgresql['enable'] = false"
+- name: Backup gitlab.rb
+  copy: src=/etc/gitlab/gitlab.rb
+        dest=/etc/gitlab.rb.bk
+        backup=yes
+        owner=root
+        group=root
+        mode=0644
 
-    - regexp: ^# gitlab_rails\['db_adapter'\]
-      line:   "gitlab_rails['db_adapter'] = \"postgresql\""
+- include: db.yml
 
-    - regexp: ^# gitlab_rails\['db_encoding'\]
-      line:   "gitlab_rails['db_encoding'] = \"unicode\""
-
-    - regexp: ^# gitlab_rails\['db_host'\]
-      line:   "gitlab_rails['db_host'] = \"127.0.0.1\""
-
-    - regexp: ^# gitlab_rails\['db_port'\]
-      line:   "gitlab_rails['db_port'] = 5432"
-
-    - regexp: ^# gitlab_rails\['db_username'\]
-      line:   "gitlab_rails['db_username'] = \"{{ db_user }}\""
-
-    - regexp: ^# gitlab_rails\['db_password'\]
-      line:   "gitlab_rails['db_password'] = \"{{ db_passwd }}\""
-
-- name: Configure and start GitLab
+- name: Configure GitLab
   command: gitlab-ctl reconfigure
+
+- name: Import default data
+  command: env force=yes gitlab-rake gitlab:setup

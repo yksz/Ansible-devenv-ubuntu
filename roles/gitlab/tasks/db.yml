@@ -1,0 +1,36 @@
+- name: Create a new database
+  postgresql_db: name={{ gitlab_db_name }}
+                 encoding='UTF-8'
+                 template='template0'
+                 login_user=postgres
+  become_user: postgres
+
+- name: Configure the database settings
+  lineinfile: dest=/etc/gitlab/gitlab.rb
+              backrefs=yes
+              regexp={{ item.regexp }}
+              line={{ item.line }}
+  with_items:
+    - regexp: ^# postgresql\['enable'\]
+      line:   "postgresql['enable'] = false"
+
+    - regexp: ^# gitlab_rails\['db_adapter'\]
+      line:   "gitlab_rails['db_adapter'] = \"postgresql\""
+
+    - regexp: ^# gitlab_rails\['db_encoding'\]
+      line:   "gitlab_rails['db_encoding'] = \"unicode\""
+
+    - regexp: ^# gitlab_rails\['db_database'\]
+      line:   "gitlab_rails['db_database'] = \"{{ gitlab_db_name }}\""
+
+    - regexp: ^# gitlab_rails\['db_host'\]
+      line:   "gitlab_rails['db_host'] = \"127.0.0.1\""
+
+    - regexp: ^# gitlab_rails\['db_port'\]
+      line:   "gitlab_rails['db_port'] = 5432"
+
+    - regexp: ^# gitlab_rails\['db_username'\]
+      line:   "gitlab_rails['db_username'] = \"{{ db_user }}\""
+
+    - regexp: ^# gitlab_rails\['db_password'\]
+      line:   "gitlab_rails['db_password'] = \"{{ db_passwd }}\""
