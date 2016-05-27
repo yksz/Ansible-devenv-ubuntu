@@ -1,0 +1,6 @@
+- name: Install Nginx
+  apt: pkg=nginx force=yes
+  environment: "{{ proxy_env }}"
+
+- name: Start Nginx
+  service: name=nginx state=started
