@@ -17,5 +17,20 @@
   apt: pkg=jenkins force=yes
   environment: "{{ proxy_env }}"
 
+- name: Backup /etc/default/jenkins
+  shell: creates=/etc/default/jenkins.bk cp /etc/default/jenkins /etc/default/jenkins.bk
+
+- name: Configure Jenkins port and URL
+  lineinfile: dest=/etc/default/jenkins
+              backrefs=yes
+              regexp={{ item.regexp }}
+              line={{ item.line }}
+  with_items:
+    - regexp: ^HTTP_PORT=
+      line:   "HTTP_PORT={{ jenkins_port }}"
+
+    - regexp: ^JENKINS_ARGS=
+      line:   "JENKINS_ARGS=\"--webroot=/var/cache/$NAME/war --httpPort=$HTTP_PORT --ajp13Port=$AJP_PORT --prefix=$PREFIX\""
+
 - name: Start Jenkins
   service: name=jenkins state=started
