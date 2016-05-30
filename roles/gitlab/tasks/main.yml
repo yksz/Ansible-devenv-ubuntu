@@ -15,13 +15,8 @@
   apt: pkg=gitlab-ce force=yes
   environment: "{{ proxy_env }}"
 
-- name: Backup gitlab.rb
-  copy: src=/etc/gitlab/gitlab.rb
-        dest=/etc/gitlab.rb.bk
-        backup=yes
-        owner=root
-        group=root
-        mode=0644
+- name: Backup /etc/gitlab/gitlab.rb
+  shell: creates=/etc/gitlab/gitlab.rb.bk cp /etc/gitlab/gitlab.rb /etc/gitlab/gitlab.rb.bk
 
 - include: db.yml
 
