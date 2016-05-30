@@ -2,5 +2,14 @@
   apt: pkg=nginx force=yes
   environment: "{{ proxy_env }}"
 
+- name: Remove the default settings
+  file: state=absent path=/etc/nginx/sites-enabled/default
+
+- name: Configure the reverse proxy settings
+  template: src=reverse-proxy.j2 dest=/etc/nginx/sites-available/reverse-proxy mode=0644
+
+- name: Enable the reverse proxy settings
+  file: state=link src=/etc/nginx/sites-available/reverse-proxy path=/etc/nginx/sites-enabled/reverse-proxy
+
 - name: Start Nginx
   service: name=nginx state=started
