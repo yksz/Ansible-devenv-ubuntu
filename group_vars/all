@@ -10,6 +10,11 @@ timezone: <Asia/Tokyo>
 db_user: <user>
 db_passwd: <passwd>
 
+unicorn_port: 18080
+redmine_port: 18081
+gitlab_port:  18082
+jenkins_port: 18083
+
 proxy: "{{ proxy_user }}:{{ proxy_passwd }}@{{ proxy_host }}:{{ proxy_port }}"
 proxy_env:
   http_proxy: http://{{ proxy }}
