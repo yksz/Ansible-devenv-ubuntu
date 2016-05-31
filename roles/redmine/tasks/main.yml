@@ -1,0 +1,28 @@
+- name: Download Redmine
+  get_url: url=http://www.redmine.org/releases/redmine-{{ redmine_version }}.tar.gz
+           dest=/tmp/redmine-{{ redmine_version }}.tar.gz
+           timeout=30
+  environment: "{{ proxy_env }}"
+
+- name: Extract the download file
+  unarchive: copy=no
+             src=/tmp/redmine-{{ redmine_version }}.tar.gz
+             dest=/tmp
+
+- name: Install Redmine
+  shell: mv /tmp/redmine-{{ redmine_version }} /opt/redmine
+  args:
+    creates: /opt/redmine
+
+- name: Install dependent gems
+  shell: bundle install --path vendor/bundle --without development test rmagick
+  args:
+    chdir: /opt/redmine
+
+- name: Create a new database
+  postgresql_db: name={{ redmine_db_name }}
+                 encoding='UTF-8'
+                 owner={{ db_user }}
+                 template='template0'
+                 login_user=postgres
+  become_user: postgres
