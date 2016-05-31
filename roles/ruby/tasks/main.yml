@@ -1,0 +1,21 @@
+- name: Remove the old version of Ruby
+  apt: pkg=ruby state=absent
+
+- name: apt-add-repository
+  apt_repository: repo=ppa:brightbox/ruby-ng
+  environment: "{{ proxy_env }}"
+
+- name: apt-get update
+  apt: update_cache=yes
+  environment: "{{ proxy_env }}"
+
+- name: Install the new version of Ruby
+  apt: pkg={{ item }} force=yes
+  with_items:
+    - ruby{{ ruby_version }}
+    - ruby{{ ruby_version }}-dev
+  environment: "{{ proxy_env }}"
+
+- name: Install Bundler
+  gem: name=bundler
+  environment: "{{ proxy_env }}"
