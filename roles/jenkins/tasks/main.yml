@@ -7,7 +7,7 @@
   environment: "{{ proxy_env }}"
 
 - name: Add the package URL to sources.list
-  shell: sh -c 'echo deb http://pkg.jenkins-ci.org/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
+  shell: sh -c 'echo deb http://pkg.jenkins-ci.org/debian binary/ > /etc/apt/sources.list.d/jenkins.list'
 
 - name: apt-get update
   apt: update_cache=yes
@@ -18,7 +18,9 @@
   environment: "{{ proxy_env }}"
 
 - name: Backup /etc/default/jenkins
-  shell: creates=/etc/default/jenkins.bk cp /etc/default/jenkins /etc/default/jenkins.bk
+  shell: cp /etc/default/jenkins /etc/default/jenkins.bk
+  args:
+    creates: /etc/default/jenkins.bk
 
 - name: Configure Jenkins port and URL
   lineinfile: dest=/etc/default/jenkins
