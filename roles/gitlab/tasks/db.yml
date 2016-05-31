@@ -1,6 +1,7 @@
 - name: Create a new database
   postgresql_db: name={{ gitlab_db_name }}
                  encoding='UTF-8'
+                 owner={{ db_user }}
                  template='template0'
                  login_user=postgres
   become_user: postgres
