@@ -1,0 +1,11 @@
+- name: Create a new database
+  postgresql_db: name={{ redmine_db_name }}
+                 encoding='UTF-8'
+                 owner={{ db_user }}
+                 template='template0'
+                 login_user=postgres
+  become_user: postgres
+
+- name: Configure the database settings
+  template: src=database.yml.j2
+            dest={{ redmine_home }}/config/database.yml

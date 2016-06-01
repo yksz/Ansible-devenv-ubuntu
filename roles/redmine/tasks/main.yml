@@ -10,19 +10,48 @@
              dest=/tmp
 
 - name: Install Redmine
-  shell: mv /tmp/redmine-{{ redmine_version }} /opt/redmine
+  shell: mv /tmp/redmine-{{ redmine_version }} {{ redmine_home }}
   args:
-    creates: /opt/redmine
+    creates: "{{ redmine_home }}"
 
 - name: Install dependent gems
   shell: bundle install --path vendor/bundle --without development test rmagick
   args:
-    chdir: /opt/redmine
+    chdir: "{{ redmine_home }}"
+  environment: "{{ proxy_env }}"
 
-- name: Create a new database
-  postgresql_db: name={{ redmine_db_name }}
-                 encoding='UTF-8'
-                 owner={{ db_user }}
-                 template='template0'
-                 login_user=postgres
-  become_user: postgres
+- include: database.yml
+
+- include: unicorn.yml
+
+- name: Configure the logrotate settings
+  template: src=logrotate.conf.j2
+            dest=/etc/logrotate.d/redmine
+
+- name: Initialize a secret token
+  shell: bundle exec rake generate_secret_token
+  args:
+    chdir: "{{ redmine_home }}"
+
+- name: Initialize the databse
+  shell: bundle exec rake db:migrate
+  args:
+    chdir: "{{ redmine_home }}"
+  environment:
+    RAILS_ENV: production
+
+- name: Initialize defualt data
+  shell: bundle exec rake redmine:load_default_data
+  args:
+    chdir: "{{ redmine_home }}"
+  environment:
+    RAILS_ENV: production
+    REDMINE_LANG: ja
+
+- name: Create a startup script for Redmine
+  template: src=init.sh.j2
+            dest=/etc/init.d/redmine
+            mode=0755
+
+- name: Start Redmine
+  service: name=redmine state=started

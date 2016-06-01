@@ -1,0 +1,14 @@
+- name: Create Unicorn Gemfile
+  copy: src=Gemfile.local
+        dest={{ redmine_home }}/Gemfile.local
+
+- name: Install Unicorn with Bundler
+  shell: bundle install --path vendor/bundle --gemfile=Gemfile.local
+  args:
+    chdir: "{{ redmine_home }}"
+  environment: "{{ proxy_env }}"
+
+- name: Configure the Unicorn settings
+  template: src=unicorn.rb.j2
+            dest={{ redmine_home }}/config/unicorn.rb
+
