@@ -1,3 +1,0 @@
-- name: Install Unicorn
-  gem: name=unicorn
-  environment: "{{ proxy_env }}"
