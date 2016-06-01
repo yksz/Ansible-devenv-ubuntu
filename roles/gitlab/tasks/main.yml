@@ -7,8 +7,13 @@
     - postfix
   environment: "{{ proxy_env }}"
 
-- name: Downlad and execute the script
-  shell: curl -sS https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh | bash
+- name: Download the GitLab script
+  get_url: url=https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh
+           dest=/tmp/gitlab.script.sh
+  environment: "{{ proxy_env }}"
+
+- name: Execute the GitLab script
+  command: bash /tmp/gitlab.script.sh
   environment: "{{ proxy_env }}"
 
 - name: Install GitLab
@@ -20,7 +25,22 @@
   args:
     creates: /etc/gitlab/gitlab.rb.bk
 
-- include: db.yml
+- include: database.yml
+
+- name: Configure the Gitlab settings
+  lineinfile: dest=/etc/gitlab/gitlab.rb
+              backrefs=yes
+              regexp={{ item.regexp }}
+              line={{ item.line }}
+  with_items:
+    - regexp: ^external_url
+      line:   "external_url 'http://localhost/gitlab'"
+
+    - regexp: ^# nginx\['enable'\]
+      line:   "nginx['enable'] = false"
+
+    - regexp: ^# unicorn\['port'\]
+      line:   "unicorn['port'] = {{ gitlab_port }}"
 
 - name: Configure GitLab
   command: gitlab-ctl reconfigure
