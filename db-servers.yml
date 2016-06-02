@@ -1,5 +1,6 @@
 - hosts: db-servers
   become: yes
   roles:
+    - common
     - timezone
     - postgresql

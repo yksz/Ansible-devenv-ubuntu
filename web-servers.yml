@@ -1,7 +1,9 @@
 - hosts: web-servers
   become: yes
   roles:
+    - common
     - timezone
-    - nginx
+    - redmine
     - gitlab
     - jenkins
+    - nginx

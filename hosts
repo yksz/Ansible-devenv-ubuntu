@@ -1,5 +1,5 @@
 [db-servers]
 127.0.0.1
 
-[app-servers]
+[web-servers]
 127.0.0.1
