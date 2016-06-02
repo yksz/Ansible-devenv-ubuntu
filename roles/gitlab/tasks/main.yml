@@ -13,7 +13,7 @@
   environment: "{{ proxy_env }}"
 
 - name: Execute the GitLab script
-  command: bash /tmp/gitlab.script.sh
+  shell: bash /tmp/gitlab.script.sh
   environment: "{{ proxy_env }}"
 
 - name: Install GitLab
@@ -27,23 +27,10 @@
 
 - include: database.yml
 
-- name: Configure the Gitlab settings
-  lineinfile: dest=/etc/gitlab/gitlab.rb
-              backrefs=yes
-              regexp={{ item.regexp }}
-              line={{ item.line }}
-  with_items:
-    - regexp: ^external_url
-      line:   "external_url 'http://localhost/gitlab'"
-
-    - regexp: ^# nginx\['enable'\]
-      line:   "nginx['enable'] = false"
-
-    - regexp: ^# unicorn\['port'\]
-      line:   "unicorn['port'] = {{ gitlab_port }}"
+- include: web.yml
 
 - name: Configure GitLab
-  command: gitlab-ctl reconfigure
+  shell: gitlab-ctl reconfigure
 
 - name: Import default data
-  command: env force=yes gitlab-rake gitlab:setup
+  shell: env force=yes gitlab-rake gitlab:setup

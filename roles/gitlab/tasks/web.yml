@@ -1,0 +1,17 @@
+- name: Configure the web settings
+  lineinfile: dest=/etc/gitlab/gitlab.rb
+              backrefs=yes
+              regexp={{ item.regexp }}
+              line={{ item.line }}
+  with_items:
+    - regexp: ^external_url
+      line:   "external_url 'http://gitlab.example.com/gitlab'"
+
+    - regexp: ^# unicorn\['port'\]
+      line:   "unicorn['port'] = {{ unicorn_port }}"
+
+    - regexp: ^# nginx\['listen_port'\]
+      line:   "nginx['listen_port'] = {{ gitlab_port }}"
+
+    - regexp: ^# nginx\['listen_https'\]
+      line:   "nginx['listen_https'] = false"
