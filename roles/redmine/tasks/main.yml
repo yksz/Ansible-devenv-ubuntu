@@ -14,15 +14,15 @@
   args:
     creates: "{{ redmine_home }}"
 
+- include: database.yml
+
+- include: unicorn.yml
+
 - name: Install dependent gems
   shell: bundle install --path vendor/bundle --without development test rmagick
   args:
     chdir: "{{ redmine_home }}"
   environment: "{{ proxy_env }}"
-
-- include: database.yml
-
-- include: unicorn.yml
 
 - name: Configure the logrotate settings
   template: src=logrotate.conf.j2
@@ -54,4 +54,4 @@
             mode=0755
 
 - name: Start Redmine
-  service: name=redmine state=started
+  service: name=redmine state=restarted enabled=yes
