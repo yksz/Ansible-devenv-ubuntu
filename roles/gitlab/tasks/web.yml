@@ -5,7 +5,7 @@
               line={{ item.line }}
   with_items:
     - regexp: ^external_url
-      line:   "external_url 'http://gitlab.example.com/gitlab'"
+      line:   "external_url 'http://{{ gitlab_host }}/gitlab'"
 
     - regexp: ^# unicorn\['port'\]
       line:   "unicorn['port'] = {{ unicorn_port }}"

@@ -10,6 +10,8 @@ timezone: <Asia/Tokyo>
 db_user: <user>
 db_passwd: <passwd>
 
+gitlab_host: <gitlab.example.com>
+
 unicorn_port: 18080
 redmine_port: 18081
 gitlab_port:  18082
