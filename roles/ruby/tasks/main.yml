@@ -8,6 +8,8 @@
 - name: apt-get update
   apt: update_cache=yes
   environment: "{{ proxy_env }}"
+  tags:
+    - apt-update
 
 - name: Install the new version of Ruby
   apt: pkg={{ item }} force=yes
@@ -17,5 +19,5 @@
   environment: "{{ proxy_env }}"
 
 - name: Install Bundler
-  gem: name=bundler
+  shell: gem install bundler
   environment: "{{ proxy_env }}"

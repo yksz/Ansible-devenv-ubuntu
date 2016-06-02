@@ -12,4 +12,4 @@
   file: state=link src=/etc/nginx/sites-available/reverse-proxy path=/etc/nginx/sites-enabled/reverse-proxy
 
 - name: Start Nginx
-  service: name=nginx state=started
+  service: name=nginx state=restarted
