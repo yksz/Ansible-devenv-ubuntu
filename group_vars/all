@@ -1,23 +1,25 @@
 ansible_ssh_user: <user>
 
-proxy_host: <proxy.example.com>
-proxy_port: <8080>
-proxy_user: <user>
-proxy_passwd: <passwd>
+proxy_host:     <proxy.example.com>
+proxy_port:     <8080>
+proxy_user:     <user>
+proxy_password: <password>
 
 timezone: <Asia/Tokyo>
 
-db_user: <user>
-db_passwd: <passwd>
+db_user:     <user>
+db_password: <password>
 
-gitlab_host: <gitlab.example.com>
+fqdn: <host.example.com>
+redmine_fqdn: "{{ fqdn }}"
+gitlab_fqdn:  "{{ fqdn }}"
 
 unicorn_port: 18080
 redmine_port: 18081
 gitlab_port:  18082
 jenkins_port: 18083
 
-proxy: "{{ proxy_user }}:{{ proxy_passwd }}@{{ proxy_host }}:{{ proxy_port }}"
+proxy: "{{ proxy_user }}:{{ proxy_password }}@{{ proxy_host }}:{{ proxy_port }}"
 proxy_env:
-  http_proxy: http://{{ proxy }}
+  http_proxy:  http://{{ proxy }}
   https_proxy: http://{{ proxy }}

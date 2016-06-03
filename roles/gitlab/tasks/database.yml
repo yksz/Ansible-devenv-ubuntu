@@ -40,4 +40,4 @@
       line:   "gitlab_rails['db_username'] = \"{{ db_user }}\""
 
     - regexp: ^# gitlab_rails\['db_password'\]
-      line:   "gitlab_rails['db_password'] = \"{{ db_passwd }}\""
+      line:   "gitlab_rails['db_password'] = \"{{ db_password }}\""
