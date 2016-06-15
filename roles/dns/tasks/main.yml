@@ -1,0 +1,21 @@
+- name: Install BIND
+  apt: pkg=bind9 force=yes
+  environment: "{{ proxy_env }}"
+
+- name: Create the zone file
+  template: src=domain.zone.j2 dest=/etc/bind/{{ dns_domain }}.zone mode=0644
+
+- name: Create the db file
+  template: src=db.domain.j2 dest=/etc/bind/db.{{ dns_domain }} mode=0644
+
+- name: Backup /etc/bind/named.conf.local
+  shell: cp /etc/bind/named.conf.local /etc/bind/named.conf.local.bk
+  args:
+    creates: /etc/bind/named.conf.local.bk
+
+- name: Enable the new zone file
+  lineinfile: dest=/etc/named.conf.local
+              line=include "/etc/bind/{{ dns_domain }}.zone"
+
+- name: Start BIND
+  service: name=bind9 state=restarted

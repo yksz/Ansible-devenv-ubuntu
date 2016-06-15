@@ -1,0 +1,15 @@
+;
+; BIND data file for {{ dns_domain }} domain
+;
+$TTL	86400
+@	IN	SOA	ns.{{ dns_domain }}. root.{{ dns_domain }}. (
+			      1		; Serial
+			 604800		; Refresh
+			  86400		; Retry
+			2419200		; Expire
+			  86400 )	; Negative Cache TTL
+;
+@	IN	NS	ns.{{ dns_domain }}.
+@	IN	A	{{ dns_ip_address }}
+ns	IN	A	{{ dns_ip_address }}
+{{ dns_hostname }}	IN	A	{{dns_ip_address }}
