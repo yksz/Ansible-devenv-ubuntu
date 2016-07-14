@@ -2,6 +2,16 @@
   copy: src=Gemfile.local
         dest={{ redmine_home }}/Gemfile.local
 
+- name: Install gem with native extensions
+  apt: pkg={{ item }} force=yes
+  with_items:
+    - build-essential
+    - patch
+    - zlib1g-dev
+    - liblzma-dev
+    - libgmp-dev
+  environment: "{{ proxy_env }}"
+
 - name: Install Unicorn with Bundler
   shell: bundle install --path vendor/bundle --gemfile=Gemfile.local
   args:
