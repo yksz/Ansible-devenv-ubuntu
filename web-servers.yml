@@ -1,7 +1,7 @@
 - hosts: web-servers
   become: yes
   roles:
-    - common
+    - init
     - timezone
     - redmine
     - gitlab
