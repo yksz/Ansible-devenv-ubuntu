@@ -2,7 +2,7 @@
   copy: src=Gemfile.local
         dest={{ redmine_home }}/Gemfile.local
 
-- name: Install gem with native extensions
+- name: Install dependent packages of gems with native extensions
   apt: pkg={{ item }} force=yes
   with_items:
     - build-essential
