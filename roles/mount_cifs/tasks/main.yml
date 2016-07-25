@@ -1,0 +1,9 @@
+- name: Install CIFS utilities
+  apt: pkg=cifs-utils force=yes
+  environment: "{{ proxy_env }}"
+
+- name: Make a directory for mount point
+  file: path={{ mount_cifs_dest }} state=directory mode=0755
+
+- name: Mount
+  shell: mount.cifs -v -o username={{ mount_cifs_username }},password={{ mount_cifs_password }},domain={{ mount_cifs_domain }},sec=ntlm {{ mount_cifs_src }} {{ mount_cifs_dest }}

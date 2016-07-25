@@ -1,0 +1,5 @@
+mount_cifs_username: username
+mount_cifs_password: password
+mount_cifs_domain: domain
+mount_cifs_src: //127.0.0.1/backups
+mount_cifs_dest: /mnt/backups

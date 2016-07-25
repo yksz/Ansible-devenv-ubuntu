@@ -1,0 +1,43 @@
+- name: Use external PostgreSQL commands
+  file: src=/usr/bin/{{ item }} dest=/opt/gitlab/bin/{{ item }} state=link
+  with_items:
+    - pg_dump
+    - psql
+
+- name: Configure the backup settings
+  lineinfile: dest=/etc/gitlab/gitlab.rb
+              backrefs=yes
+              regexp={{ item.regexp }}
+              line={{ item.line }}
+  with_items:
+    - regexp: ^# gitlab_rails\['backup_archive_permissions'\]
+      line:   "gitlab_rails['backup_archive_permissions'] = 0644"
+
+    - regexp: ^# gitlab_rails\['backup_keep_time'\]
+      line:   "gitlab_rails['backup_keep_time'] = 604800"
+
+- name: Configure the backup upload settings
+  blockinfile:
+    dest: /etc/gitlab/gitlab.rb
+    insertbefore: ^# gitlab_rails\['backup_upload_connection'\]
+    content: |
+      gitlab_rails['backup_upload_connection'] = {
+        'provider' => 'Local',
+        'local_root' => '{{ gitlab_backup_dest }}',
+      }
+
+- name: Stop GitLab
+  shell: gitlab-ctl stop
+
+- name: Reconfigure GitLab
+  shell: gitlab-ctl reconfigure
+
+- name: Start GitLab
+  shell: gitlab-ctl start
+
+- name: Schedule GitLab backup
+  cron:
+    name: "backup gitlab"
+    hour: "{{ gitlab_backup_hour }}"
+    minute: "{{ gitlab_backup_minute }}"
+    job: "/opt/gitlab/bin/gitlab-rake gitlab:backup:create CRON=1"

@@ -1,4 +1,3 @@
 - name: Install jre{{ jre_version }}
   apt: pkg=openjdk-{{ jre_version }}-jre state=latest force=yes
   environment: "{{ proxy_env }}"
-

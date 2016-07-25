@@ -41,9 +41,3 @@
 
     - regexp: ^# gitlab_rails\['db_password'\]
       line:   "gitlab_rails['db_password'] = \"{{ db_password }}\""
-
-- name: Use external PostgreSQL commands
-  file: src=/usr/bin/{{ item }} dest=/opt/gitlab/bin/{{ item }} state=link
-  with_items:
-    - pg_dump
-    - psql
