@@ -36,8 +36,7 @@
   shell: gitlab-ctl start
 
 - name: Schedule GitLab backup
-  cron:
-    name: "backup gitlab"
-    hour: "{{ gitlab_backup_hour }}"
-    minute: "{{ gitlab_backup_minute }}"
-    job: "/opt/gitlab/bin/gitlab-rake gitlab:backup:create CRON=1"
+  cron: name="backup gitlab"
+        hour={{ gitlab_backup_hour }}
+        minute={{ gitlab_backup_minute }}
+        job="/opt/gitlab/bin/gitlab-rake gitlab:backup:create CRON=1"
