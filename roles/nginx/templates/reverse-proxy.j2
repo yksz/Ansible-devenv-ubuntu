@@ -1,19 +1,19 @@
 server {
     listen 80;
 
-    location / {
+    location {{ nginx_redmine_url }} {
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_pass http://127.0.0.1:{{ redmine_port }};
     }
 
-    location /gitlab {
+    location {{ nginx_gitlab_url }} {
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_pass http://127.0.0.1:{{ gitlab_port }};
     }
 
-    location /jenkins {
+    location {{ nginx_jenkins_url }} {
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_pass http://127.0.0.1:{{ jenkins_port }};
