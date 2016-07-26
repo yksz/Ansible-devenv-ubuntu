@@ -16,6 +16,9 @@
     - regexp: ^# gitlab_rails\['backup_keep_time'\]
       line:   "gitlab_rails['backup_keep_time'] = 604800"
 
+    - regexp: ^# gitlab_rails\['backup_upload_remote_directory'\]
+      line:   "gitlab_rails['backup_upload_remote_directory'] = 'gitlab_backups'"
+
 - name: Configure the backup upload settings
   blockinfile:
     dest: /etc/gitlab/gitlab.rb

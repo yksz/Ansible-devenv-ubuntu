@@ -3,3 +3,4 @@ mount_cifs_password: <password>
 mount_cifs_domain:   <domain>
 mount_cifs_src:      <//127.0.0.1/share>
 mount_cifs_dest:     </mnt/backups>
+mount_cifs_uid:      <git>
