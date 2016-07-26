@@ -1,0 +1,2 @@
+- name: Make a directory for Jenkins
+  file: path=/var/jenkins state=directory mode=1777

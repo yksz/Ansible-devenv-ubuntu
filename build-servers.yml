@@ -1,0 +1,6 @@
+- hosts: build-servers
+  become: yes
+  roles:
+    - init
+    - timezone
+    - jenkins_slave
