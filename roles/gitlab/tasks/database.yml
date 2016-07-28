@@ -31,7 +31,7 @@
       line:   "gitlab_rails['db_database'] = \"{{ gitlab_db_name }}\""
 
     - regexp: ^# gitlab_rails\['db_host'\]
-      line:   "gitlab_rails['db_host'] = \"127.0.0.1\""
+      line:   "gitlab_rails['db_host'] = \"{{ db_host }}\""
 
     - regexp: ^# gitlab_rails\['db_port'\]
       line:   "gitlab_rails['db_port'] = 5432"
