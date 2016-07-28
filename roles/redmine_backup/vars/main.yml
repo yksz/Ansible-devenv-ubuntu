@@ -1,0 +1,5 @@
+redmine_backup_dest:   </mnt/backups>
+redmine_backup_hour:   1
+redmine_backup_minute: 0
+redmine_home:          /opt/redmine
+redmine_db_name:       redmine

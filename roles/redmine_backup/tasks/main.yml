@@ -1,0 +1,10 @@
+- name: Create a backup script for Redmine
+  template: src=redmine_backup.sh.j2
+            dest={{ redmine_home }}/redmine_backup.sh
+            mode=0700
+
+- name: Schedule Redmine backup
+  cron: name="backup redmine"
+        hour={{ redmine_backup_hour }}
+        minute={{ redmine_backup_minute }}
+        job="{{ redmine_home }}/redmine_backup.sh >/dev/null 2>&1"

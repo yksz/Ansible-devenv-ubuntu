@@ -7,6 +7,7 @@
     - gitlab
     - jenkins
     - nginx
-### Backup GitLab
+### Backup settings
 #    - mount_cifs
+#    - redmine_backup
 #    - gitlab_backup
