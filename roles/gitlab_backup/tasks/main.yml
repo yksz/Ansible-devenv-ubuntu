@@ -13,9 +13,6 @@
     - regexp: ^# gitlab_rails\['backup_archive_permissions'\]
       line:   "gitlab_rails['backup_archive_permissions'] = 0644"
 
-    - regexp: ^# gitlab_rails\['backup_keep_time'\]
-      line:   "gitlab_rails['backup_keep_time'] = 604800"
-
     - regexp: ^# gitlab_rails\['backup_upload_remote_directory'\]
       line:   "gitlab_rails['backup_upload_remote_directory'] = 'gitlab_backups'"
 
@@ -38,8 +35,13 @@
 - name: Start GitLab
   shell: gitlab-ctl start
 
+- name: Create a backup script for GitLab
+  template: src=gitlab_backup.sh.j2
+            dest=/opt/gitlab/bin/gitlab_backup.sh
+            mode=0700
+
 - name: Schedule GitLab backup
   cron: name="backup gitlab"
         hour={{ gitlab_backup_hour }}
         minute={{ gitlab_backup_minute }}
-        job="/opt/gitlab/bin/gitlab-rake gitlab:backup:create CRON=1"
+        job="/opt/gitlab/bin/gitlab_backup.sh >/dev/null 2>&1"

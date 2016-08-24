@@ -1,0 +1,12 @@
+#!/bin/bash
+#
+# Back up data for Redmine
+
+BACKUP_DIR={{ gitlab_backup_dest }}
+GITLAB_BACKUP_DIR=$BACKUP_DIR/gitlab_backups
+
+# back up
+/opt/gitlab/bin/gitlab-rake gitlab:backup:create CRON=1
+
+# delete file older than 7 days
+find $GITLAB_BACKUP_DIR/ -mtime +7 -type f | xargs rm -f
