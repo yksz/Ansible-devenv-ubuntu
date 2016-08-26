@@ -7,6 +7,9 @@
     - regexp: ^external_url
       line:   "external_url 'http://{{ gitlab_fqdn }}/gitlab'"
 
+    - regexp: ^# gitlab_rails\['time_zone'\]
+      line:   "gitlab_rails['time_zone'] = '{{ timezone }}'"
+
     - regexp: ^# unicorn\['port'\]
       line:   "unicorn['port'] = {{ unicorn_port }}"
 
