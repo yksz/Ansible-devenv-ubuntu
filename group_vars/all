@@ -2,7 +2,7 @@
 ansible_ssh_user: <user>
 
 
-### Proxy settings (For apt-get)
+### Proxy settings (for apt-get)
 proxy_host:     <proxy.example.com>
 proxy_port:     <8080>
 proxy_user:     <user>
@@ -10,8 +10,8 @@ proxy_password: <password>
 
 proxy: "{{ proxy_user }}:{{ proxy_password }}@{{ proxy_host }}:{{ proxy_port }}"
 proxy_env:
-  http_proxy:  http://{{ proxy }}
-  https_proxy: http://{{ proxy }}
+  http_proxy:  http://{{ proxy }} # comment out if you don't use proxy
+  https_proxy: http://{{ proxy }} # comment out if you don't use proxy
 
 
 ### Web & Database server settings
