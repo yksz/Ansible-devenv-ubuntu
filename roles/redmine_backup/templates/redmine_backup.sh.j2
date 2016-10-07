@@ -15,5 +15,5 @@ PGPASSWORD="{{ db_password }}" pg_dump -h {{ db_host }} -U {{ db_user }} {{ redm
 # back up upload files
 tar -C {{ redmine_home }} -czf $REDMINE_BACKUP_DIR/redmine_upload_backup_${timestamp}.tar.gz files
 
-# delete file older than 7 days
-find $REDMINE_BACKUP_DIR/ -mtime +7 -type f | xargs rm -f
+# delete files older than {{ redmine_backup_days }} days
+find $REDMINE_BACKUP_DIR/ -mtime +{{ redmine_backup_days }} -type f | xargs rm -f
