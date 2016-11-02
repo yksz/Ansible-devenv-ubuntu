@@ -32,5 +32,6 @@
 - name: Configure GitLab
   shell: gitlab-ctl reconfigure
 
+# NOTE: This task INITIALIZES GitLab data
 - name: Import default data
   shell: env force=yes gitlab-rake gitlab:setup
