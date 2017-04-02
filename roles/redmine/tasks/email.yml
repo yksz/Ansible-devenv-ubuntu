@@ -1,0 +1,3 @@
+- name: Configure the email settings
+  template: src=configuration.yml.j2
+            dest={{ redmine_home }}/config/configuration.yml
