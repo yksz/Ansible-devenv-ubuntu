@@ -9,4 +9,4 @@ GITLAB_BACKUP_DIR=$BACKUP_DIR/gitlab_backups
 /opt/gitlab/bin/gitlab-rake gitlab:backup:create CRON=1
 
 # delete files older than {{ gitlab_backup_days }} days
-find $GITLAB_BACKUP_DIR/ -mtime +{{ gitlab_backup_days }} -type f | xargs rm -f
+find $GITLAB_BACKUP_DIR/ -maxdepth 1 -type f -mtime +{{ gitlab_backup_days }} | xargs rm -f
